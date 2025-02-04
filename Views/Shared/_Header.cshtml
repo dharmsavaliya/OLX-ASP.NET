@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!-- Link CSS File -->
+<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
+<header class="header">
+    <div class="header-top">
+        <!-- Logo -->
+        <div class="logo"><a href="/" style="color:white; text-decoration: none;">OLX</a></div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" placeholder="Find Cars, Mobile Phones and more..." />
+            <button>Search</button>
+        </div>
+
+        <!-- User Actions -->
+        <div class="actions">
+            <!-- Sell Button -->
+            <a href="@Url.Action("Sell", "AdCategories")">
+                <button class="sell-button">Sell</button>
+            </a>
+
+            <!-- Wishlist Icon -->
+            <i class="fas fa-heart text-danger" style="font-size: 24px;"></i>
+
+            <!-- Profile Icon -->
+            <i class="fas fa-user-circle text-dark" onclick="profileClick()" style="cursor: pointer; font-size: 32px;"></i>
+        </div>
+    </div>
+</header>
+
+<script>
+    function profileClick() {
+        console.log("Profile icon clicked"); // Replace with navigation logic
+    }
+</script>
