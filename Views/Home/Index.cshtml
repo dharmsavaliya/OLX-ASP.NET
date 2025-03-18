@@ -1,12 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-}
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Product Listing";
+
+    var selectedCategory = ViewBag.SelectedCategory ?? "ALL CATEGORIES";
+    var categories = new List<string>
+    {
+        "Cars", "Motorcycles", "Mobile Phones", "For Sale: Houses & Apartments",
+        "Scooters", "Commercial & Other Vehicles", "For Rent: Houses & Apartments"
+    };
+
+    var products = new List<dynamic>
+    {
+        new { Id = 1, Name = "Honda City 2020", Price = "₹12,00,000", Image = "/images/download (2).jpeg", Category = "Cars" },
+        new { Id = 2, Name = "Samsung Galaxy S22", Price = "₹80,000", Image = "/images/OIP (2).jpeg", Category = "Mobile Phones" },
+        new { Id = 3, Name = "Yamaha R15", Price = "₹1,50,000", Image = "/images/OIP (1).jpeg", Category = "Motorcycles" },
+        new { Id = 4, Name = "Luxury Villa for Rent", Price = "₹1,00,000/month", Image = "/images/download (1).jpeg", Category = "For Rent: Houses & Apartments" },
+        new { Id = 5, Name = "Scooty Pep+", Price = "₹50,000", Image = "/images/download.jpeg", Category = "Scooters" },
+        new { Id = 6, Name = "Sony Bravia TV", Price = "₹70,000", Image = "/images/OIP.jpeg", Category = "Electronics" }
+    };
+
+    var filteredProducts = selectedCategory == "ALL CATEGORIES"
+        ? products
+        : products.Where(p => p.Category == selectedCategory).ToList();
 }
 
+<link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-0">
+    <!-- Category Dropdown (All Categories) -->
+    <div class="category-dropdown">
+        <button class="dropdown-btn">All Categories ▾</button>
+        <div class="dropdown-content">
+            <a href="?category=ALL CATEGORIES" class="@(selectedCategory == "ALL CATEGORIES" ? "active" : "")">All Categories</a>
+            @foreach (var category in categories)
+            {
+                <a href="?category=@category" class="@(selectedCategory == category ? "active" : "")">@category</a>
+            }
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters">
+        <input type="number" placeholder="Min Price" class="form-control" />
+        <input type="number" placeholder="Max Price" class="form-control" />
+        <select class="form-control">
+            <option>Sort by</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+        </select>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid mt-4">
+        @foreach (var product in filteredProducts)
+        {
+            <div class="product-card">
+                <a href="@Url.Action("ProductDetails", "Home", new { id = product.Id })">
+                    <img src="@Url.Content(product.Image)" alt="@product.Name" class="product-image" />
+                    <h4 class="product-name">@product.Name</h4>
+                    <p class="product-price">@product.Price</p>
+                </a>
+                <button class="wishlist-btn"><i class="fas fa-heart"></i> Add to Wishlist</button>
+            </div>
+        }
+    </div>
 </div>

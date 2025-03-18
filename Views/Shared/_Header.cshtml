@@ -1,41 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-<!-- Link CSS File -->
-<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+﻿<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <header class="header">
     <div class="header-top">
         <!-- Logo -->
-        <div class="logo"><a href="/" style="color:white; text-decoration: none;">OLX</a></div>
+        <div class="logo">
+            <a href="/" class="logo-link">
+                <i class="fas fa-store"></i>
+                <span class="brand-name">OLX</span>
+            </a>
+        </div>
 
         <!-- Search Bar -->
         <div class="search-bar">
-            <input type="text" placeholder="Find Cars, Mobile Phones and more..." />
-            <button>Search</button>
+            <input type="text" placeholder="Find Cars, Mobile Phones and more..." class="search-input" />
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
 
         <!-- User Actions -->
         <div class="actions">
-            <!-- Sell Button -->
-            <a href="@Url.Action("Sell", "AdCategories")">
-                <button class="sell-button">Sell</button>
-            </a>
+            <a href="@Url.Action("Wishlist", "Account")" class="icon-btn"><i class="fas fa-heart"></i></a>
+            <a href="@Url.Action("Messages", "Account")" class="icon-btn"><i class="fas fa-envelope"></i></a>
+            <a href="@Url.Action("Sell", "Home")" class="sell-btn">Sell</a>
 
-            <!-- Wishlist Icon -->
-            <i class="fas fa-heart text-danger" style="font-size: 24px;"></i>
-
-            <!-- Profile Icon -->
-            <i class="fas fa-user-circle text-dark" onclick="profileClick()" style="cursor: pointer; font-size: 32px;"></i>
+            @if (Context.Session.GetString("FullName") != null)
+            {
+                <a href="@Url.Action("Profile", "Account")" class="text-btn">Profile</a>
+                <a href="@Url.Action("Logout", "Account")" class="text-btn">Logout</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="text-btn">Login / Register</a>
+            }
         </div>
     </div>
 </header>
-
-<script>
-    function profileClick() {
-        console.log("Profile icon clicked"); // Replace with navigation logic
-    }
-</script>

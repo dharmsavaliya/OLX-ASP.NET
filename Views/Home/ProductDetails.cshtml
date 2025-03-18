@@ -1,0 +1,84 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<link rel="stylesheet" href="~/css/productdetails.css" asp-append-version="true">
+
+<div class="product-details-container">
+    <!-- Back Button -->
+    <button onclick="window.history.back()" class="btn btn-secondary mb-3">Back to Product Listing</button>
+
+    <!-- Main Product Section -->
+    <div class="product-main">
+        <!-- Product Image -->
+        <div class="product-image">
+            <img src="@Url.Content(Model.Image)" alt="@Model.Name" />
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+            <h1 class="product-name">@Model.Name</h1>
+            <h2 class="product-price">@Model.Price</h2>
+            <p class="product-description">@Model.Description</p>
+            <p class="product-location"><strong>Location:</strong> @Model.Location</p>
+
+            <!-- Buttons -->
+            <button class="btn btn-primary">CHAT WITH SELLER</button>
+            <button class="btn btn-success">MAKE ADVANCED PAYMENT</button>
+        </div>
+    </div>
+
+    <!-- Seller Profile Section -->
+    @if (Model?.Seller != null)
+    {
+        <div class="seller-profile">
+            <h3>Seller Profile</h3>
+            <div class="seller-card">
+                <div class="seller-avatar">
+                    <img src="/images/user-avatar.png" alt="Seller" />
+                </div>
+                <div class="seller-info">
+                    <h4>@Model.Seller.Name</h4>
+                    <p><strong>Contact:</strong> @Model.Seller.Contact</p>
+                    <p><strong>Ratings:</strong> ⭐ @Model.Seller.Rating / 5</p>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Seller Location Map -->
+    <div class="seller-map">
+        <h3>Seller Location</h3>
+        <iframe width="100%" height="300"
+                frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=@Model.Location"
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Related Ads Section -->
+    @if (Model?.RelatedAds != null && Model.RelatedAds.Count > 0)
+    {
+        <div class="related-ads">
+            <h3>Related Ads</h3>
+            <div class="related-ads-grid">
+                @foreach (var related in Model.RelatedAds)
+                {
+                    <div class="related-ad-card">
+                        <a href="@Url.Action("ProductDetails", "Home", new { id = related.Id })">
+                            <img src="@Url.Content(related.Image)" alt="@related.Name">
+                            <p class="related-name">@related.Name</p>
+                            <p class="related-price">@related.Price</p>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>No related ads found.</p>
+    }
+</div>

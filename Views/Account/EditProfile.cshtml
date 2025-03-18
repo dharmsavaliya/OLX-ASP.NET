@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h2>Edit Profile</h2>
+
+    <form method="post" action="@Url.Action("EditProfile", "Account")">
+        <div class="mb-3">
+            <label for="fullName">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" value="@ViewBag.FullName" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="@ViewBag.Email" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <a href="@Url.Action("Profile", "Account")" class="btn btn-secondary mt-3">Back to Profile</a>
+</div>

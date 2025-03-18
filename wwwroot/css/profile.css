@@ -1,0 +1,60 @@
+﻿/* Profile Page Container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Profile Card */
+.profile-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* Profile Image */
+.profile-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+/* User Details */
+.profile-details h2 {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #333;
+}
+
+.profile-details p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Profile Actions */
+.profile-actions {
+    margin-top: 15px;
+}
+
+.edit-profile-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    .edit-profile-button:hover {
+        background-color: #0056b3;
+    }
