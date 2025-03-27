@@ -1,0 +1,11 @@
+﻿<div class="sidebar">
+    <ul>
+        <li><a href="@Url.Action("UserManagement", "Admin")">User Management</a></li>
+        <li><a href="@Url.Action("ProductManagement", "Admin")">Product Management</a></li>
+        <li><a href="@Url.Action("CategoryManagement", "Admin")">Category Management</a></li>
+        <li><a href="@Url.Action("SellerManagement", "Admin")">Seller Management</a></li>
+    </ul>
+    <form method="post" action="@Url.Action("Logout", "Account")">
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+</div>
