@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
@@ -163,22 +162,23 @@ namespace ASP.NET_OLX.Controllers
         {
             if (HttpContext.Session.GetString("Role") == "Admin")
             {
-                List<dynamic> categories = new List<dynamic>();
+                List<Category> categories = new List<Category>();
 
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT ID, Name FROM Categories";
+                    string query = "SELECT ID, Name, Quantity FROM Categories";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            categories.Add(new
+                            categories.Add(new Category
                             {
                                 ID = reader.GetInt32("ID"),
-                                Name = reader.GetString("Name")
+                                Name = reader.GetString("Name"),
+                                Quantity = reader.GetInt32("Quantity")
                             });
                         }
                     }
@@ -188,6 +188,7 @@ namespace ASP.NET_OLX.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+
 
 
         public IActionResult SellerManagement()
@@ -260,6 +261,47 @@ namespace ASP.NET_OLX.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+        [HttpPost]
+        public IActionResult AddCategory(string categoryName, int quantity)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Categories (Name, Quantity) VALUES (@CategoryName, @Quantity)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@CategoryName", categoryName);
+                    cmd.Parameters.AddWithValue("@Quantity", quantity);
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("CategoryManagement");
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCategory(int id, string categoryName, int quantity)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Categories SET Name = @CategoryName, Quantity = @Quantity WHERE ID = @CategoryID";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@CategoryID", id);
+                    cmd.Parameters.AddWithValue("@CategoryName", categoryName);
+                    cmd.Parameters.AddWithValue("@Quantity", quantity);
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("CategoryManagement");
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
 
 
         [HttpPost]
@@ -280,6 +322,49 @@ namespace ASP.NET_OLX.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+        [HttpPost]
+        public IActionResult AddSeller(string name, string contact, decimal rating)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Sellers (Name, Contact, Rating) VALUES (@Name, @Contact, @Rating)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Contact", contact);
+                    cmd.Parameters.AddWithValue("@Rating", rating);
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("SellerManagement");
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateSeller(int id, string name, string contact, decimal rating)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Sellers SET Name = @Name, Contact = @Contact, Rating = @Rating WHERE ID = @SellerID";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@SellerID", id);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Contact", contact);
+                    cmd.Parameters.AddWithValue("@Rating", rating);
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("SellerManagement");
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
 
         [HttpPost]
         public IActionResult DeleteSeller(int id)

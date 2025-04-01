@@ -1,4 +1,4 @@
-﻿@model List<dynamic>
+﻿@model List<ASP.NET_OLX.Models.Category>
 @{
     ViewData["Title"] = "Category Management";
 }
@@ -8,19 +8,36 @@
     @Html.Partial("_Sidebar")
     <div class="content">
         <h2>Category Management</h2>
+
+        <!-- Add Category Form -->
+        <h3>Add Category</h3>
+        <form method="post" action="@Url.Action("AddCategory", "Admin")">
+            <input type="text" name="categoryName" placeholder="Category Name" required />
+            <input type="number" name="quantity" placeholder="Quantity" min="0" required />
+            <button type="submit">Add Category</button>
+        </form>
+
         <table>
             <thead>
-                <tr><th>Category Name</th><th>Actions</th></tr>
+                <tr><th>Category Name</th><th>Quantity</th><th>Actions</th></tr>
             </thead>
             <tbody>
                 @foreach (var category in Model)
                 {
                     <tr>
                         <td>@category.Name</td>
+                        <td>@category.Quantity</td>
                         <td>
                             <form method="post" action="@Url.Action("DeleteCategory", "Admin")">
                                 <input type="hidden" name="id" value="@category.ID" />
                                 <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                            <!-- Update Form -->
+                            <form method="post" action="@Url.Action("UpdateCategory", "Admin")">
+                                <input type="hidden" name="id" value="@category.ID" />
+                                <input type="text" name="categoryName" value="@category.Name" />
+                                <input type="number" name="quantity" value="@category.Quantity" min="0" />
+                                <button type="submit">Update</button>
                             </form>
                         </td>
                     </tr>
