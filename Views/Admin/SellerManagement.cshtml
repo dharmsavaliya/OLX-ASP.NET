@@ -8,6 +8,16 @@
     @Html.Partial("_Sidebar")
     <div class="content">
         <h2>Seller Management</h2>
+
+        <!-- Add Seller Form -->
+        <h3>Add Seller</h3>
+        <form method="post" action="@Url.Action("AddSeller", "Admin")">
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="text" name="contact" placeholder="Contact" required />
+            <input type="number" name="rating" placeholder="Rating" step="0.1" min="0" max="5" required />
+            <button type="submit">Add Seller</button>
+        </form>
+
         <table>
             <thead>
                 <tr><th>Name</th><th>Contact</th><th>Rating</th><th>Actions</th></tr>
@@ -23,6 +33,14 @@
                             <form method="post" action="@Url.Action("DeleteSeller", "Admin")">
                                 <input type="hidden" name="id" value="@seller.ID" />
                                 <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                            <!-- Update Form -->
+                            <form method="post" action="@Url.Action("UpdateSeller", "Admin")">
+                                <input type="hidden" name="id" value="@seller.ID" />
+                                <input type="text" name="name" value="@seller.Name" />
+                                <input type="text" name="contact" value="@seller.Contact" />
+                                <input type="number" name="rating" value="@seller.Rating" step="0.1" min="0" max="5" />
+                                <button type="submit">Update</button>
                             </form>
                         </td>
                     </tr>

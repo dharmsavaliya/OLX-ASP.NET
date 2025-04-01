@@ -4,47 +4,39 @@
     ViewData["Title"] = "Sell Your Product";
 }
 
-<h3>Sell Your Product</h3>
-
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="Name">Product Name</label>
-        <input type="text" name="Name" id="Name" class="form-control" required />
+        <input type="text" class="form-control" id="Name" name="Name" required />
     </div>
-
+    <div class="form-group">
+        <label for="Price">Price</label>
+        <input type="text" class="form-control" id="Price" name="Price" required />
+    </div>
     <div class="form-group">
         <label for="Category">Category</label>
-        <select name="Category" id="Category" class="form-control" required>
-            <option value="">Select Category</option>
-            @foreach (var category in ViewBag.Categories as List<string>)
+        <select class="form-control" id="Category" name="Category" required>
+            @foreach (var category in ViewBag.Categories)
             {
                 <option value="@category">@category</option>
             }
         </select>
     </div>
-
-    <div class="form-group">
-        <label for="Price">Price</label>
-        <input type="text" name="Price" id="Price" class="form-control" required />
-    </div>
-
     <div class="form-group">
         <label for="Description">Description</label>
-        <textarea name="Description" id="Description" class="form-control" required></textarea>
+        <textarea class="form-control" id="Description" name="Description" required></textarea>
     </div>
-
     <div class="form-group">
         <label for="Location">Location</label>
-        <input type="text" name="Location" id="Location" class="form-control" required />
+        <input type="text" class="form-control" id="Location" name="Location" required />
     </div>
-
     <div class="form-group">
-        <label for="imageFile">Upload Product Image</label>
-        <input type="file" name="imageFile" id="imageFile" class="form-control" />
+        <label for="Image">Product Image</label>
+        <input type="file" class="form-control" id="Image" name="imageFile" required />
     </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Sell Product</button>
 </form>
+
 
 @if (TempData["Message"] != null)
 {
