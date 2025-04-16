@@ -1,0 +1,21 @@
+﻿@model ASP.NET_OLX.Models.Product
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+<h2>Edit Product</h2>
+
+<form method="post" asp-action="UpdateProduct" asp-controller="Admin" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="@Model.ID" />
+
+    <input type="text" name="name" value="@Model.Name" placeholder="Product Name" required />
+    <input type="text" name="price" value="@Model.Price" placeholder="Price" required />
+    <input type="text" name="category" value="@Model.Category" placeholder="Category" required />
+    <input type="text" name="location" value="@Model.Location" placeholder="Location" required />
+    <textarea name="description" placeholder="Description" required>@Model.Description</textarea>
+    <p>Current Image: <img src="~/@Model.Image" width="100" /></p>
+    <input type="file" name="ImageFile" accept="image/*" />
+
+    <button type="submit" class="update-btn">Update Product</button>
+</form>

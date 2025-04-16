@@ -119,14 +119,14 @@ namespace ASP.NET_OLX.Controllers
                 if (ImageFile != null && ImageFile.Length > 0)
                 {
                     // Generate a unique filename and save the file
-                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
                     if (!Directory.Exists(uploadsFolder))
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
                     string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
-                    imagePath = Path.Combine("uploads", uniqueFileName);
+                    imagePath = Path.Combine("uploads", uniqueFileName);  // Store relative path
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -139,6 +139,7 @@ namespace ASP.NET_OLX.Controllers
                     imagePath = "uploads/default-image.jpg"; // Use a default image
                 }
 
+                // Save product details to the database
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
@@ -146,7 +147,7 @@ namespace ASP.NET_OLX.Controllers
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@Price", price);
-                    cmd.Parameters.AddWithValue("@Image", imagePath);
+                    cmd.Parameters.AddWithValue("@Image", imagePath);  // Store the relative path
                     cmd.Parameters.AddWithValue("@Category", category);
                     cmd.Parameters.AddWithValue("@Description", description);
                     cmd.Parameters.AddWithValue("@Location", location);
@@ -157,6 +158,7 @@ namespace ASP.NET_OLX.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+
 
         public IActionResult CategoryManagement()
         {
@@ -340,6 +342,94 @@ namespace ASP.NET_OLX.Controllers
 
                 return RedirectToAction("SellerManagement");
             }
+            return RedirectToAction("Login", "Account");
+        }
+        // GET: Admin/EditProduct/5
+        public IActionResult EditProduct(int id)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                Product product = null;
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM Products WHERE ID = @ID";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ID", id);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            product = new Product
+                            {
+                                ID = reader.GetInt32("ID"),
+                                Name = reader.GetString("Name"),
+                                Price = reader.GetString("Price"),
+                                Image = reader.GetString("Image"),
+                                Category = reader.GetString("Category"),
+                                Description = reader.GetString("Description"),
+                                Location = reader.GetString("Location")
+                            };
+                        }
+                    }
+                }
+
+                return View(product);
+            }
+
+            return RedirectToAction("Login", "Account");
+        }
+
+        // POST: Admin/UpdateProduct
+        [HttpPost]
+        public IActionResult UpdateProduct(int id, string name, string price, IFormFile ImageFile, string category, string description, string location)
+        {
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                string imagePath = null;
+
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    imagePath = Path.Combine("uploads", uniqueFileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        ImageFile.CopyTo(fileStream);
+                    }
+                }
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = imagePath != null
+                        ? "UPDATE Products SET Name = @Name, Price = @Price, Image = @Image, Category = @Category, Description = @Description, Location = @Location WHERE ID = @ID"
+                        : "UPDATE Products SET Name = @Name, Price = @Price, Category = @Category, Description = @Description, Location = @Location WHERE ID = @ID";
+
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Price", price);
+                    if (imagePath != null) cmd.Parameters.AddWithValue("@Image", imagePath);
+                    cmd.Parameters.AddWithValue("@Category", category);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.Parameters.AddWithValue("@Location", location);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("ProductManagement");
+            }
+
             return RedirectToAction("Login", "Account");
         }
 
