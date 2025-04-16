@@ -3,17 +3,22 @@
 }
 <link rel="stylesheet" href="~/css/pro.css" asp-append-version="true" />
 
-<div class="profile-container">
-    <div class="profile-card">
-        <div class="profile-image">
-            <img src="~/images/default-profile.png" alt="Profile Picture">
-        </div>
-        <div class="profile-details">
-            <h2>Welcome, @ViewBag.FullName</h2>
-            <p>Email: @ViewBag.Email</p>
-        </div>
-        <div class="profile-actions">
-            <a href="@Url.Action("EditProfile", "Account")" class="edit-profile-button">Edit Profile</a>
-        </div>
-    </div>
-</div>
+@* <div class="profile-container"> *@
+@*     <div class="profile-card"> *@
+@*         <div class="profile-image"> *@
+@*             <img src="~/images/default-profile.png" alt="Profile Picture"> *@
+@*         </div> *@
+@*         <div class="profile-details"> *@
+@*             <h2>Welcome, @ViewBag.FullName</h2> *@
+@*             <p>Email: @ViewBag.Email</p> *@
+@*         </div> *@
+@*         <div class="profile-actions"> *@
+@*             <a href="@Url.Action("EditProfile", "Account")" class="edit-profile-button">Edit Profile</a> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+<h2>Profile</h2>
+<p>Name: @ViewBag.FullName</p>
+<p>Email: @ViewBag.Email</p>
+<a href="@Url.Action("EditProfile", "Account")">Edit Profile</a>

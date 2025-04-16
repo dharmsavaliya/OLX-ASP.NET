@@ -78,14 +78,86 @@ namespace ASP.NET_OLX.Controllers
 
         public IActionResult Profile()
         {
-            if (HttpContext.Session.GetString("FullName") != null)
+            if (HttpContext.Session.GetString("Email") != null)
             {
-                ViewBag.FullName = HttpContext.Session.GetString("FullName");
-                ViewBag.Email = HttpContext.Session.GetString("Email");
-                return View();
+                string email = HttpContext.Session.GetString("Email");
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Name, Email FROM Users WHERE Email = @Email";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Email", email);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ViewBag.FullName = reader.GetString("Name");
+                            ViewBag.Email = reader.GetString("Email");
+                            return View();
+                        }
+                    }
+                }
             }
+
             return RedirectToAction("Login");
         }
+
+        public IActionResult EditProfile()
+        {
+            if (HttpContext.Session.GetString("Email") != null)
+            {
+                string email = HttpContext.Session.GetString("Email");
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Name, Email FROM Users WHERE Email = @Email";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Email", email);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ViewBag.FullName = reader.GetString("Name");
+                            ViewBag.Email = reader.GetString("Email");
+                            return View();
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        public IActionResult EditProfile(string fullName, string password)
+        {
+            if (HttpContext.Session.GetString("Email") != null)
+            {
+                string email = HttpContext.Session.GetString("Email");
+
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Users SET Name = @Name, Password = @Password WHERE Email = @Email";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", fullName);
+                    cmd.Parameters.AddWithValue("@Password", password); // Ideally, hash this password
+                    cmd.Parameters.AddWithValue("@Email", email);
+
+                    cmd.ExecuteNonQuery();
+                    HttpContext.Session.SetString("FullName", fullName);
+                }
+
+                return RedirectToAction("Profile");
+            }
+
+            return RedirectToAction("Login");
+        }
+    
 
         public IActionResult Logout()
         {

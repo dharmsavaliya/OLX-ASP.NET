@@ -57,8 +57,9 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Styling */
-.add-form {
+/* Add/Edit Product Form Styling */
+.add-form,
+.edit-form {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
@@ -70,7 +71,9 @@ body {
 }
 
     .add-form input,
-    .add-form textarea {
+    .edit-form input,
+    .add-form textarea,
+    .edit-form textarea {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -78,31 +81,46 @@ body {
         font-size: 14px;
     }
 
-    .add-form textarea {
+    .add-form textarea,
+    .edit-form textarea {
         grid-column: span 3;
         height: 80px;
         resize: none;
     }
 
-    .add-form input[type="file"] {
+    .add-form input[type="file"],
+    .edit-form input[type="file"] {
         grid-column: span 3;
     }
 
-.add-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
+.add-btn,
+.update-btn {
+    padding: 12px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     grid-column: span 3;
-    width: 150px;
+    width: 180px;
     margin: auto;
+}
+
+.add-btn {
+    background-color: #007bff;
+    color: white;
 }
 
     .add-btn:hover {
         background-color: #0056b3;
+    }
+
+.update-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+    .update-btn:hover {
+        background-color: #218838;
     }
 
 /* Table Styling */
@@ -132,20 +150,69 @@ td img {
     border-radius: 5px;
 }
 
-/* Delete Button */
-.delete-btn {
-    background-color: red;
-    color: white;
+/* Buttons */
+.delete-btn,
+.cancel-btn {
     padding: 8px 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    margin-right: 5px;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
 }
 
     .delete-btn:hover {
-        background-color: darkred;
+        background-color: #c82333;
     }
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+}
+
+    .cancel-btn:hover {
+        background-color: #5a6268;
+    }
+
+/* Seller Section Styling */
+.seller-section {
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+    .seller-section h3 {
+        margin-top: 0;
+        color: #333;
+    }
+
+.seller-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .seller-details span {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .seller-details a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .seller-details a:hover {
+            text-decoration: underline;
+        }
 
 /* Footer Styling */
 .footer {
@@ -154,46 +221,70 @@ td img {
     font-size: 14px;
     color: #777;
 }
-/* Example Styles for the Forms */
-form input {
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+
+/* Edit Product Form Adjustments */
+.edit-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
 }
 
-form button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-    form button:hover {
-        background-color: #45a049;
+    .edit-form input,
+    .edit-form textarea,
+    .edit-form select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
     }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-    table th, table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
+    .edit-form textarea {
+        grid-column: span 3;
+        resize: none;
+        height: 100px;
     }
 
-.delete-btn {
-    background-color: red;
+    .edit-form input[type="file"] {
+        grid-column: span 3;
+    }
+
+.update-btn {
+    background-color: #28a745;
     color: white;
     border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    padding: 5px 10px;
+    grid-column: span 3;
+    width: 180px;
+    margin: 0 auto;
 }
 
-    .delete-btn:hover {
-        background-color: #d32f2f;
+    .update-btn:hover {
+        background-color: #218838;
+    }
+
+/* Edit Button (Table Action) */
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+    .edit-btn:hover {
+        background-color: #0056b3;
     }

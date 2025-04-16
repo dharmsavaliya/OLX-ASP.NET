@@ -28,19 +28,22 @@
                 @foreach (var product in Model)
                 {
                     <tr>
-                        <td><img src="~/@product.Image" alt="Product Image" width="50"></td>
+                        <td><img src="@Url.Content($"~/{product.Image}")" alt="Product Image" width="50" /></td>
                         <td>@product.Name</td>
                         <td>@product.Category</td>
                         <td>@product.Price</td>
                         <td>@product.Location</td>
                         <td>
-                            <form method="post" action="@Url.Action("DeleteProduct", "Admin")">
+                            <form method="post" action="@Url.Action("DeleteProduct", "Admin")" style="display:inline;">
                                 <input type="hidden" name="id" value="@product.ID" />
                                 <button type="submit" class="delete-btn">Delete</button>
                             </form>
+                            <a href="@Url.Action("EditProduct", "Admin", new { id = product.ID })" class="edit-btn">Edit</a>
                         </td>
+
                     </tr>
                 }
             </tbody>
         </table>
-
+    </div>
+</div>
