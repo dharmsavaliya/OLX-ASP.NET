@@ -1,13 +1,24 @@
-﻿@{
-    ViewData["Title"] = "Messages";
-}
+﻿@model ASP.NET_OLX.Models.MessageViewModel
 
-<div class="container mt-4">
-    <h2>Your Messages</h2>
-    <ul>
-        @foreach (var msg in Model)
+<h3>Chat with @Model.Seller.Name</h3>
+<link rel="stylesheet" href="~/css/messages.css" asp-append-version="true" />
+
+
+<div class="chat-container">
+    <div class="messages">
+        @foreach (var message in Model.Messages)
         {
-            <li>@msg</li>
+            <div class="message">
+                <strong>@message.SenderName</strong>: @message.Content
+                <span class="message-time">@message.Timestamp.ToString("hh:mm tt")</span>
+            </div>
         }
-    </ul>
+    </div>
+
+    <form method="post" action="@Url.Action("SendMessage", "Account")">
+        <input type="hidden" name="ProductId" value="@Model.Product.ID" />
+        <input type="hidden" name="SellerName" value="@Model.Seller.Name" />
+        <textarea name="MessageContent" placeholder="Type your message here..." required></textarea>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
 </div>

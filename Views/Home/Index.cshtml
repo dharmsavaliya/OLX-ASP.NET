@@ -47,7 +47,12 @@
                     <h4 class="product-name">@product.Name</h4>
                     <p class="product-price">@product.Price</p>
                 </a>
-                <button class="wishlist-btn"><i class="fas fa-heart"></i> Add to Wishlist</button>
+                <form method="post" action="/Account/AddToWishlist">
+                    <input type="hidden" name="productId" value="@product.ID" />
+                    <button type="submit" class="wishlist-btn"><i class="fas fa-heart"></i> Add to Wishlist</button>
+                </form>
+
+
             </div>
         }
     </div>

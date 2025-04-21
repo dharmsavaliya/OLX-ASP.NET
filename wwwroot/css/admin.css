@@ -288,3 +288,71 @@ td img {
     .edit-btn:hover {
         background-color: #0056b3;
     }
+/* Category Form Styling */
+.category-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+    .category-form input[type="text"],
+    .category-form input[type="number"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        width: 200px;
+    }
+
+    .category-form button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .category-form button:hover {
+            background-color: #0056b3;
+        }
+
+/* Update Form in Table */
+table form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+    table form input[type="text"],
+    table form input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 13px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    table form button[type="submit"] {
+        padding: 8px;
+        border: none;
+        border-radius: 5px;
+        font-size: 13px;
+        margin-top: 4px;
+        cursor: pointer;
+    }
+
+        table form button[type="submit"]:not(.delete-btn) {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+            table form button[type="submit"]:not(.delete-btn):hover {
+                background-color: #138496;
+            }
+

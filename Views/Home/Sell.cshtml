@@ -6,16 +6,16 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="Name">Product Name</label>
-        <input type="text" class="form-control" id="Name" name="Name" required />
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" required />
     </div>
     <div class="form-group">
-        <label for="Price">Price</label>
-        <input type="text" class="form-control" id="Price" name="Price" required />
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" required />
     </div>
     <div class="form-group">
-        <label for="Category">Category</label>
-        <select class="form-control" id="Category" name="Category" required>
+        <label asp-for="Category"></label>
+        <select asp-for="Category" class="form-control" required>
             @foreach (var category in ViewBag.Categories)
             {
                 <option value="@category">@category</option>
@@ -23,20 +23,28 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="Description">Description</label>
-        <textarea class="form-control" id="Description" name="Description" required></textarea>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control" required></textarea>
     </div>
     <div class="form-group">
-        <label for="Location">Location</label>
-        <input type="text" class="form-control" id="Location" name="Location" required />
+        <label asp-for="Location"></label>
+        <input asp-for="Location" class="form-control" required />
     </div>
     <div class="form-group">
-        <label for="Image">Product Image</label>
-        <input type="file" class="form-control" id="Image" name="imageFile" required />
+        <label for="imageFile">Product Image</label>
+        <input type="file" class="form-control" id="imageFile" name="imageFile" required />
     </div>
+    <div class="form-group">
+        <label>Seller Name</label>
+        <input type="text" name="SellerName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Seller Contact</label>
+        <input type="text" name="SellerContact" class="form-control" required />
+    </div>
+    <br />
     <button type="submit" class="btn btn-primary">Sell Product</button>
 </form>
-
 
 @if (TempData["Message"] != null)
 {

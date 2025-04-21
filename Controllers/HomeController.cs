@@ -157,32 +157,93 @@ namespace ASP.NET_OLX.Controllers
             return RedirectToAction("ProductDetails", new { id = id });
         }
 
+        [HttpGet]
         public IActionResult Sell()
         {
-            var categories = new List<string>
+            List<string> categories = new List<string>();
+
+            using (var conn = new MySqlConnection(connectionString))
             {
-                "Cars", "Motorcycles", "Mobile Phones", "For Sale: Houses & Apartments",
-                "Scooters", "Commercial & Other Vehicles", "For Rent: Houses & Apartments"
-            };
+                conn.Open();
+                string query = "SELECT name FROM categories"; // assuming 'name' is the column in your 'categories' table
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            categories.Add(reader.GetString("name"));
+                        }
+                    }
+                }
+            }
 
             ViewBag.Categories = categories;
             return View();
         }
-
         [HttpPost]
-        public IActionResult Sell(OlxProduct product, IFormFile imageFile)
+        
+        public IActionResult Sell(OlxProduct product, IFormFile imageFile, string SellerName, string SellerContact)
         {
             if (ModelState.IsValid)
             {
                 string imagePath = "/images/" + imageFile.FileName;
+                string serverPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageFile.FileName);
+                using (var stream = new FileStream(serverPath, FileMode.Create))
+                {
+                    imageFile.CopyTo(stream);
+                }
+
                 product.Image = imagePath;
+
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"INSERT INTO products (name, price, image, category, description, location, seller_name, seller_contact) 
+                             VALUES (@name, @price, @image, @category, @description, @location, @seller_name, @seller_contact)";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", product.Name);
+                        cmd.Parameters.AddWithValue("@price", product.Price);
+                        cmd.Parameters.AddWithValue("@image", product.Image);
+                        cmd.Parameters.AddWithValue("@category", product.Category);
+                        cmd.Parameters.AddWithValue("@description", product.Description);
+                        cmd.Parameters.AddWithValue("@location", product.Location);
+                        cmd.Parameters.AddWithValue("@seller_name", SellerName);
+                        cmd.Parameters.AddWithValue("@seller_contact", SellerContact);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
 
                 TempData["Message"] = "Product added successfully!";
                 return RedirectToAction("Index");
             }
 
+            // Repopulate categories if model is invalid
+            List<string> categories = new List<string>();
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT name FROM categories";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            categories.Add(reader.GetString("name"));
+                        }
+                    }
+                }
+            }
+            ViewBag.Categories = categories;
+
             return View(product);
         }
+
+
 
         [HttpPost]
         public JsonResult PaymentCallback([FromBody] PaymentData payment)
