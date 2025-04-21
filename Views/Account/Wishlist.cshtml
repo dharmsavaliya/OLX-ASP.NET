@@ -1,13 +1,24 @@
-﻿@{
-    ViewData["Title"] = "Wishlist";
+﻿@model List<ASP.NET_OLX.Models.Product>
+
+@{
+    ViewData["Title"] = "Your Wishlist";
 }
 
-<div class="container mt-4">
-    <h2>Your Wishlist</h2>
-    <ul>
-        @foreach (var item in Model)
-        {
-                <li>@item</li>
-        }
-    </ul>
+<link rel="stylesheet" href="~/css/wishlist.css" asp-append-version="true" />
+
+<h2 class="wishlist-title">Your Wishlist</h2>
+
+<div class="product-grid">
+    @foreach (var product in Model)
+    {
+        <div class="product-card">
+            <img src="@Url.Content(product.Image)" alt="@product.Name" class="product-image" />
+            <h4 class="product-name">@product.Name</h4>
+            <p class="product-price">₹@product.Price</p>
+            <form method="post" action="/Account/RemoveFromWishlist">
+                <input type="hidden" name="productId" value="@product.ID" />
+                <button type="submit" class="remove-btn">Remove</button>
+            </form>
+        </div>
+    }
 </div>

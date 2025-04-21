@@ -28,7 +28,14 @@
             <p class="product-description">@Model.Product.Description</p>
             <p class="product-location"><strong>Location:</strong> @Model.Product.Location</p>
 
-            <button class="btn btn-primary">CHAT WITH SELLER</button>
+            <button class="btn btn-primary">
+<a href="@Url.Action("Messages", "Account", new { sellerName = Model.Seller.Name, productId = Model.Product.ID })"
+   style="color: white; text-decoration: none;">
+   CHAT WITH SELLER
+</a>
+
+            </button>
+
             <button class="btn btn-success" id="pay-button">MAKE ADVANCED PAYMENT</button>
         </div>
     </div>
